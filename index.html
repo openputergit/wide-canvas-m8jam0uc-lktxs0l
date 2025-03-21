@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Small SEO Tools Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .tool-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        .feature-active {
+            display: block;
+        }
+        .feature-inactive {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-blue-600">SmallSEOTools</h1>
+                <div class="hidden md:flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Tools</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4">All-in-One SEO & Content Tools</h2>
+            <p class="text-gray-600 mb-8">Free online tools for your daily content and SEO needs</p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto">
+                <input type="text" id="toolSearch" placeholder="Search for tools..." 
+                    class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500">
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Text Analysis Tools -->
+            <div class="tool-card bg-white p-6 rounded-lg shadow-md hover:shadow-lg">
+                <i class="bi bi-file-text text-3xl text-blue-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Plagiarism Checker</h3>
+                <p class="text-gray-600 mb-4">Check your content for plagiarism</p>
+                <button onclick="showFeature('plagiarism')" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Check Now
+                </button>
+            </div>
+
+            <!-- Grammar Checker -->
+            <div class="tool-card bg-white p-6 rounded-lg shadow-md hover:shadow-lg">
+                <i class="bi bi-spell-check text-3xl text-blue-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Grammar Checker</h3>
+                <p class="text-gray-600 mb-4">Check grammar and spelling errors</p>
+                <button onclick="showFeature('grammar')" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Check Now
+                </button>
+            </div>
+
+            <!-- Word Counter -->
+            <div class="tool-card bg-white p-6 rounded-lg shadow-md hover:shadow-lg">
+                <i class="bi bi-calculator text-3xl text-blue-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Word Counter</h3>
+                <p class="text-gray-600 mb-4">Count words and characters</p>
+                <button onclick="showFeature('wordcount')" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Count Now
+                </button>
+            </div>
+        </section>
+
+        <!-- Tool Features -->
+        <div id="toolFeatures" class="bg-white p-6 rounded-lg shadow-md mb-12">
+            <!-- Plagiarism Checker -->
+            <div id="plagiarism" class="feature-inactive">
+                <h3 class="text-2xl font-bold mb-4">Plagiarism Checker</h3>
+                <textarea class="w-full p-4 border rounded mb-4" rows="6" 
+                    placeholder="Paste your text here to check for plagiarism..."></textarea>
+                <button onclick="checkPlagiarism()" 
+                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                    Check Plagiarism
+                </button>
+                <div id="plagiarismResult" class="mt-4"></div>
+            </div>
+
+            <!-- Grammar Checker -->
+            <div id="grammar" class="feature-inactive">
+                <h3 class="text-2xl font-bold mb-4">Grammar Checker</h3>
+                <textarea class="w-full p-4 border rounded mb-4" rows="6" 
+                    placeholder="Paste your text here to check grammar..."></textarea>
+                <button onclick="checkGrammar()" 
+                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                    Check Grammar
+                </button>
+                <div id="grammarResult" class="mt-4"></div>
+            </div>
+
+            <!-- Word Counter -->
+            <div id="wordcount" class="feature-inactive">
+                <h3 class="text-2xl font-bold mb-4">Word Counter</h3>
+                <textarea id="wordCountText" class="w-full p-4 border rounded mb-4" rows="6" 
+                    placeholder="Type or paste your text here..." onkeyup="countWords()"></textarea>
+                <div id="wordCountResult" class="mt-4">
+                    <p>Words: <span id="words">0</span></p>
+                    <p>Characters: <span id="chars">0</span></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Show/Hide Features
+        function showFeature(feature) {
+            document.querySelectorAll('#toolFeatures > div').forEach(div => {
+                div.classList.add('feature-inactive');
+                div.classList.remove('feature-active');
+            });
+            document.getElementById(feature).classList.remove('feature-inactive');
+            document.getElementById(feature).classList.add('feature-active');
+        }
+
+        // Word Counter
+        function countWords() {
+            const text = document.getElementById('wordCountText').value;
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+            const chars = text.length;
+            document.getElementById('words').textContent = words;
+            document.getElementById('chars').textContent = chars;
+        }
+
+        // Plagiarism Checker
+        function checkPlagiarism() {
+            // Simulated check
+            document.getElementById('plagiarismResult').innerHTML = 
+                '<p class="text-green-600">Content appears to be 98% unique.</p>';
+        }
+
+        // Grammar Checker
+        function checkGrammar() {
+            // Simulated check
+            document.getElementById('grammarResult').innerHTML = 
+                '<p class="text-green-600">No major grammar issues found.</p>';
+        }
+
+        // Search Functionality
+        document.getElementById('toolSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.tool-card').forEach(card => {
+                const toolName = card.querySelector('h3').textContent.toLowerCase();
+                if (toolName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
